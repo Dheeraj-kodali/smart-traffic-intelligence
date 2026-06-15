@@ -183,12 +183,6 @@ docker run -p 7860:7860 smart-traffic-intelligence
 
 ---
 
-## 📸 Demo Preview
-
-Screenshots and demo videos will be added after deployment.
-
----
-
 ## 🚀 Future Enhancements
 
 - Multi-camera support
