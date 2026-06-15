@@ -191,26 +191,43 @@ def render_dashboard() -> None:
 				st.warning("No forecast available. Generate one in the Video Analytics tab.")
 
 		st.divider()
-		st.subheader("🎙️ Traffic Voice Assistant")
-		if st.button("Start Voice Assistant"):
-			with st.spinner("Listening..."):
-				try:
-					from src.assistant.dashboard_voice_service import run_dashboard_voice_assistant
-					command, response = run_dashboard_voice_assistant()
-					
-					error_messages = [
-						"no speech detected.",
-						"speech service is unavailable.",
-						"i could not understand the audio."
-					]
-					
-					if command.lower() in error_messages or command.lower().startswith("an error occurred"):
-						st.error(command)
-					else:
-						st.success(f"You said: {command}")
-						st.info(response)
-				except Exception as e:
-					st.error(f"Voice Assistant failed: {str(e)}")
+		st.subheader("🎤 Traffic Voice Assistant")
+		try:
+			from src.assistant.dashboard_voice_service import run_dashboard_voice_assistant
+			command, response = run_dashboard_voice_assistant()
+			
+			if command is not None and response is not None:
+				error_messages = [
+					"no speech detected.",
+					"speech service is unavailable.",
+					"i could not understand the audio."
+				]
+				
+				if command.lower() in error_messages or command.lower().startswith("an error occurred"):
+					st.error(command)
+				else:
+					st.success(f"You said: {command}")
+					st.info(response)
+		except Exception as e:
+			st.error(f"Voice Assistant failed: {str(e)}")
+			
+		st.write("")
+		st.caption("Voice input is unavailable in this environment? Please use text input.")
+		fallback_cmd = st.text_input("Ask the assistant a question:", key="voice_fallback")
+		if st.button("Submit Text Query"):
+			if fallback_cmd:
+				with st.spinner("Processing text command..."):
+					from src.assistant.dashboard_voice_service import get_dashboard_context
+					from src.assistant.command_processor import process_command
+					from src.assistant.voice_factory import speak
+					context = get_dashboard_context()
+					resp = process_command(fallback_cmd, context)
+					st.success(f"You said: {fallback_cmd}")
+					st.info(resp)
+					try:
+						speak(resp)
+					except Exception as err:
+						st.error(f"Voice playback failed: {err}")
 
 
 def render_image_detection() -> None:

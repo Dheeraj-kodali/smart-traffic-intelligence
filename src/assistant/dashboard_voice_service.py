@@ -3,9 +3,8 @@
 import streamlit as st
 from typing import Dict, Any, Tuple
 
-from .speech_to_text import listen
+from src.assistant.voice_factory import listen, speak
 from .command_processor import process_command
-from .text_to_speech import speak
 
 
 def get_dashboard_context() -> Dict[str, Any]:
@@ -79,12 +78,15 @@ def get_dashboard_context() -> Dict[str, Any]:
     return context
 
 
-def run_dashboard_voice_assistant() -> Tuple[str, str]:
+def run_dashboard_voice_assistant() -> Tuple[str | None, str | None]:
     """Run the voice assistant using the dashboard context."""
     dashboard_data = get_dashboard_context()
     
     command = listen()
     
+    if command is None:
+        return None, None
+        
     error_messages = [
         "no speech detected.",
         "speech service is unavailable.",
@@ -95,7 +97,6 @@ def run_dashboard_voice_assistant() -> Tuple[str, str]:
     
     if cmd_lower in error_messages or cmd_lower.startswith("an error occurred"):
         formatted_error = command.capitalize()
-        print(f"Speaking: {formatted_error}")
         try:
             speak(formatted_error)
         except Exception as error:
@@ -104,7 +105,6 @@ def run_dashboard_voice_assistant() -> Tuple[str, str]:
         
     response = process_command(command, dashboard_data)
     
-    print(f"Speaking: {response}")
     try:
         speak(response)
     except Exception as error:

@@ -5,19 +5,12 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ffmpeg \
-    libsm6 \
-    libxext6 \
-    libglib2.0-0 \
-    portaudio19-dev \
-    gcc \
-    g++ \
-    git \
-    && rm -rf /var/lib/apt/lists/*
-
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+COPY packages.txt .
+RUN apt-get update && xargs -a packages.txt apt-get install -y --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY . .
 

@@ -2,8 +2,7 @@
 
 from typing import Dict, Any, Tuple
 
-from .speech_to_text import listen
-from .text_to_speech import speak
+from src.assistant.voice_factory import listen, speak
 from .command_processor import process_command
 
 
