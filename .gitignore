@@ -11,7 +11,7 @@ output/
 reports/
 *.mp4
 *.avi
-.streamlit/
+
 
 .env
 .vscode/
