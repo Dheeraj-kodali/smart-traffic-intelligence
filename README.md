@@ -12,9 +12,6 @@
 ![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Spaces-FFD21E?logo=huggingface&logoColor=000)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-![Smart Traffic Intelligence Banner](assets/banner.png)  
-*(Note: Replace with an actual dashboard screenshot after deployment.)*
-
 </div>
 
 ---
@@ -177,15 +174,9 @@ docker run -p 7860:7860 smart-traffic-intelligence
 
 ---
 
-## 📸 Screenshots
+## 📸 Demo Preview
 
-## Dashboard Preview
-
-![City Dashboard](assets/dashboard.png)
-
-![Video Analytics](assets/video_analytics.png)
-
-![Voice Assistant](assets/voice_assistant.png)
+Screenshots and demo videos will be added after deployment.
 
 ---
 
