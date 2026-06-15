@@ -1,6 +1,6 @@
 """Speech to text processing."""
 
-import speech_recognition as sr
+import os
 
 def listen(timeout: int = 5, phrase_time_limit: int = 10) -> str:
     """
@@ -13,6 +13,15 @@ def listen(timeout: int = 5, phrase_time_limit: int = 10) -> str:
     Returns:
         The recognized text in lowercase or a user-friendly error message.
     """
+    # Disable local microphone features in cloud environments completely
+    if os.getenv("SPACE_ID") is not None:
+        return "Microphone is unavailable in this environment. Please use text input."
+
+    try:
+        import speech_recognition as sr
+    except ImportError:
+        return "Speech recognition module is not installed."
+        
     recognizer = sr.Recognizer()
     
     try:
