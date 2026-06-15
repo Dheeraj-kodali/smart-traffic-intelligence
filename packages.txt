@@ -1,4 +1,6 @@
 ffmpeg
 libsm6
 libxext6
+libglib2.0-0
 portaudio19-dev
+build-essential

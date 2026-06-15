@@ -1,148 +1,211 @@
 <div align="center">
 
-# 🚦 Traffic Copilot AI
+# Smart Traffic Intelligence System
 
-### Smart Traffic Intelligence System
+**AI-powered traffic analytics platform using computer vision, forecasting, and voice interaction.**
 
-An AI-powered traffic analytics platform combining computer vision, forecasting, and voice interaction for intelligent congestion monitoring.
-
-![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.58.0-FF4B4B?logo=streamlit)
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.58.0-FF4B4B?logo=streamlit&logoColor=white)
 ![YOLOv8](https://img.shields.io/badge/YOLOv8-Ultralytics-yellow)
-![OpenCV](https://img.shields.io/badge/OpenCV-4.13.0-green?logo=opencv)
-![Prophet](https://img.shields.io/badge/Prophet-1.3.0-blueviolet)
-![Plotly](https://img.shields.io/badge/Plotly-6.8.0-blueviolet)
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
+![Prophet](https://img.shields.io/badge/Prophet-Time%20Series-blueviolet)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)
+![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Spaces-FFD21E?logo=huggingface&logoColor=000)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-![Traffic Copilot Banner](assets/banner.png)
+![Smart Traffic Intelligence Banner](assets/banner.png)  
+*(Note: Replace with an actual dashboard screenshot after deployment.)*
 
 </div>
 
-## 📸 Demo
+---
 
-| Dashboard | Detection |
-|------------|------------|
-| ![](assets/dashboard.png) | ![](assets/detection.png) |
+## 📖 Overview
 
-| Forecasting | Voice Assistant |
-|--------------|-----------------|
-| ![](assets/forecast.png) | ![](assets/voice_assistant.png) |
+The **Smart Traffic Intelligence System** is an advanced, production-ready AI application designed to transform raw traffic video feeds into actionable city-planning insights. By seamlessly combining state-of-the-art computer vision models, time-series forecasting, and an interactive voice assistant, this platform provides a comprehensive solution for monitoring, analyzing, and predicting urban traffic congestion.
+
+Built for both local desktop environments and robust cloud deployments (including Hugging Face Spaces), it empowers decision-makers with real-time data, predictive trends, and hands-free conversational analytics.
+
+---
 
 ## ✨ Key Features
 
-* ✅ Real-time vehicle detection
-* ✅ Image analytics
-* ✅ Video analytics
-* ✅ Traffic forecasting
-* ✅ Congestion scoring
-* ✅ Voice assistant
-* ✅ Downloadable reports
-* ✅ Smart city dashboard
+- 🚗 **Real-time vehicle detection** using state-of-the-art YOLOv8 models
+- 📊 **Video analytics dashboard** for comprehensive traffic flow visualization
+- 🚦 **Congestion scoring** to intelligently classify current road conditions
+- 📈 **Time-series forecasting** predicting future traffic peaks with Prophet
+- 🎙️ **Voice assistant** with built-in browser speech recognition
+- 🔊 **Browser-based text-to-speech** for conversational responses
+- 📄 **PDF report generation** for sharing executive traffic summaries
+- 🐳 **Docker deployment** for robust, containerized distribution
+- 🤗 **Hugging Face compatibility** for immediate cloud availability
+
+---
 
 ## 🛠️ Technology Stack
 
-| Category | Technologies |
+| Layer | Technologies |
 | --- | --- |
-| **Language** | Python 3.11 |
 | **Frontend UI** | Streamlit |
-| **Computer Vision** | YOLOv8 (Ultralytics), OpenCV |
-| **Time-Series AI** | Prophet |
-| **Audio Processing** | SpeechRecognition, pyttsx3, PyAudio |
-| **Data Visualization** | Plotly, Pandas, NumPy |
-| **Deployment** | Hugging Face Spaces |
+| **AI Models (Computer Vision)** | YOLOv8 (Ultralytics), OpenCV |
+| **Time-Series Forecasting** | Prophet |
+| **Data Processing** | Pandas, NumPy |
+| **Data Visualization** | Plotly |
+| **Voice & Audio** | SpeechRecognition, gTTS, streamlit-mic-recorder, pyttsx3, PyAudio |
+| **Infrastructure & Deployment** | Docker, Hugging Face Spaces |
 
-<details>
-<summary><b>📂 Project Structure</b></summary>
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+flowchart TD
+
+A[Traffic Video Upload] --> B[YOLOv8 Vehicle Detection]
+
+B --> C[Vehicle Counts]
+
+C --> D[Congestion Analytics]
+
+C --> E[Historical Traffic Dataset]
+
+E --> F[Prophet Forecasting]
+
+D --> G[City Dashboard]
+
+F --> G
+
+G --> H[Voice Assistant]
+
+H --> I[Speech-to-Text]
+
+I --> J[Command Processor]
+
+J --> K[Dashboard Insights]
+
+K --> L[Text-to-Speech Response]
+```
+
+---
+
+## 🔄 Application Workflow
+
+```mermaid
+sequenceDiagram
+
+participant User
+participant Dashboard
+participant YOLO
+participant Prophet
+participant Voice
+
+User->>Dashboard: Upload traffic video
+Dashboard->>YOLO: Detect vehicles
+YOLO-->>Dashboard: Vehicle counts
+Dashboard->>Prophet: Forecast traffic
+Prophet-->>Dashboard: Future predictions
+User->>Voice: Ask a question
+Voice-->>Dashboard: Parsed command
+Dashboard-->>User: Spoken response
+```
+
+---
+
+## 📂 Project Structure
 
 ```text
 smart-traffic-intelligence/
-├── app/                  # Streamlit UI layouts and pages
-│   └── streamlit_app.py  # Application entry point
-├── configs/              # YAML configuration files
-├── docs/                 # Documentation and user guides
-├── scripts/              # Training, evaluation, and deployment scripts
-├── src/                  # Core domain logic
-│   ├── analytics/        # KPI generation and metrics
-│   ├── assistant/        # Voice assistant & LLM service
-│   ├── common/           # Shared utilities and logging
-│   ├── detection/        # YOLOv8 integration and vehicle logic
-│   ├── forecasting/      # Prophet time-series models
-│   └── intelligence/     # Congestion scoring
-├── tests/                # Unit and integration tests
-├── packages.txt          # System-level dependencies
-├── requirements.txt      # Python dependencies
-└── README.md             # Project documentation
+├── app/
+├── assets/
+├── configs/
+├── data/
+├── notebooks/
+├── scripts/
+├── src/
+│   ├── analytics/
+│   ├── assistant/
+│   ├── detection/
+│   ├── forecasting/
+│   └── common/
+├── requirements.txt
+├── Dockerfile
+├── packages.txt
+└── README.md
 ```
 
-</details>
+---
 
-<details>
-<summary><b>🚀 Installation</b></summary>
+## 💻 Local Setup
 
 ```bash
-git clone https://github.com/Dheeraj-kodali/smart-traffic-intelligence.git
+git clone <repository-url>
 cd smart-traffic-intelligence
 
 python -m venv .venv
-
-# Windows
-.venv\Scripts\activate
+source .venv/bin/activate
+# Windows:
+# .venv\Scripts\activate
 
 pip install -r requirements.txt
+
 streamlit run app/streamlit_app.py
 ```
 
-</details>
+---
 
-## 💻 Local Execution
-
-Start the application locally using Streamlit:
+## 🐳 Docker Deployment
 
 ```bash
-streamlit run app/streamlit_app.py
-```
-This will start the local server, typically available at `http://localhost:8501`.
+docker build -t smart-traffic-intelligence .
 
-## 🎙️ Sample Voice Commands
-
-Click the **Start Voice Assistant** button in the City Dashboard tab and try asking:
-
-```text
-What is the current traffic status?
-When will traffic be low?
-What is the congestion score?
-What is the traffic trend?
-When is the next peak traffic period?
+docker run -p 7860:7860 smart-traffic-intelligence
 ```
 
-## ☁️ Deployment (Hugging Face Spaces)
+---
 
-This application is fully compatible with **Hugging Face Spaces** (Streamlit SDK).
+## ☁️ Hugging Face Deployment
 
-- **Entry Point**: The space uses `app/streamlit_app.py` as the main entry point.
-- **System Dependencies**: Hugging Face automatically installs `packages.txt` (which provides `ffmpeg`, `libsm6`, `libxext6`, `portaudio19-dev`).
-- **Python Dependencies**: Hugging Face installs `requirements.txt`. We use `opencv-python-headless` for cloud compatibility.
-- **Limitations**: Hugging Face Spaces do not provide server-side microphone access or local speaker playback. The application will gracefully fall back and disable voice input/output automatically, but text-based queries will continue to function.
+### Deployment Steps:
+1. Create a Docker Space on Hugging Face.
+2. Connect your GitHub repository.
+3. Deploy automatically using the provided Dockerfile.
 
-## 🔮 Future Roadmap
+**Important Note on Voice Integration:**
+- Browser microphone access works only when users grant permission.
+- Local desktop TTS libraries such as `pyttsx3` are unavailable in cloud environments.
+- In Hugging Face, the application automatically uses browser microphone + `gTTS`.
+- Local mode safely keeps `SpeechRecognition` + `pyttsx3` support unchanged.
 
-* [ ] Multi-camera support
-* [ ] Live CCTV integration
-* [ ] Accident detection
-* [ ] Traffic signal optimization
-* [ ] Mobile application
-* [ ] Cloud notifications
+---
 
-## 👨‍💻 Author
+## 📸 Screenshots
 
-**Dheeraj Kodali**
+## Dashboard Preview
 
-GitHub: https://github.com/Dheeraj-kodali
+![City Dashboard](assets/dashboard.png)
+
+![Video Analytics](assets/video_analytics.png)
+
+![Voice Assistant](assets/voice_assistant.png)
+
+---
+
+## 🚀 Future Enhancements
+
+- Multi-camera support
+- Live CCTV streaming
+- Edge deployment
+- Traffic signal optimization
+- LLM-powered conversational analytics
+- Mobile dashboard
+
+---
+
+## 🤝 Contributors
+
+* Kodali Dheeraj
+
+---
 
 ## 📄 License
 
 This project is licensed under the MIT License.
-
-## ⭐ Support
-
-If you found this project useful, please consider starring the repository.

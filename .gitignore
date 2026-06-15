@@ -12,3 +12,9 @@ reports/
 *.mp4
 *.avi
 .streamlit/
+
+.env
+.vscode/
+.idea/
+logs/
+data/raw/
