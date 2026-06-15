@@ -1,3 +1,12 @@
+---
+title: Smart Traffic Interactive Assistant
+emoji: 🚦
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
+
 <div align="center">
 
 # Smart Traffic Intelligence System
