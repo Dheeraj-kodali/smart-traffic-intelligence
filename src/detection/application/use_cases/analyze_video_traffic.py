@@ -4,6 +4,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
 from datetime import datetime, timedelta
+import tempfile
+import os
+import cv2
 
 import pandas as pd
 
@@ -50,13 +53,48 @@ class AnalyzeVideoTrafficUseCase:
 		frame_skip: int = 10,
 		progress_callback: Callable[[int, int], None] | None = None,
 	) -> TrafficVideoAnalysisResult:
+		processed_video_path = video_path
+		temp_file_path = None
+
+		# 1. Detect the uploaded video's resolution
+		cap = cv2.VideoCapture(str(video_path))
+		width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+		height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+		fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
+
+		# 2. If width > 1280 or height > 720:
+		if width > 1280 or height > 720:
+			# Downscale the video to 1280x720 while preserving aspect ratio
+			scale = min(1280 / width, 720 / height)
+			new_width = int(width * scale)
+			new_height = int(height * scale)
+
+			# 3. Save the resized video to a temporary file
+			temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
+			temp_file_path = temp_file.name
+			temp_file.close()
+
+			fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+			out = cv2.VideoWriter(temp_file_path, fourcc, fps, (new_width, new_height))
+
+			while True:
+				ret, frame = cap.read()
+				if not ret:
+					break
+				resized_frame = cv2.resize(frame, (new_width, new_height))
+				out.write(resized_frame)
+			out.release()
+			processed_video_path = Path(temp_file_path)
+		cap.release()
+
 		rows: list[dict[str, int | str]] = []
-		total_frames = self.frame_reader.count_frames(Path(video_path))
+		total_frames = self.frame_reader.count_frames(processed_video_path)
 		total_vehicles_detected = 0
 		background_image = None
 		all_detections = []
 
-		for frame in self.frame_reader.iter_frames(Path(video_path), frame_skip=frame_skip):
+		# 4. Run YOLO on the resized video (processed_video_path)
+		for frame in self.frame_reader.iter_frames(processed_video_path, frame_skip=frame_skip):
 			if background_image is None:
 				background_image = frame.image.copy()
 				
@@ -90,6 +128,11 @@ class AnalyzeVideoTrafficUseCase:
 		dataframe = pd.DataFrame(rows, columns=[
 			"timestamp", "frame_number", "vehicle_count", "cars", "trucks", "buses", "motorcycles", "congestion_level"
 		])
+		
+		# 5. Delete temporary files after processing
+		if temp_file_path is not None and os.path.exists(temp_file_path):
+			os.remove(temp_file_path)
+			
 		self.output_csv_path.parent.mkdir(parents=True, exist_ok=True)
 		dataframe.to_csv(self.output_csv_path, index=False)
 
